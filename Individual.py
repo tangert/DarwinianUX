@@ -2,7 +2,8 @@
 # Individual class which represents a particular sequence of button combinations
 
 import random
-from Constants import buttons
+from Globals import buttons
+from Globals import GENE_LENGTH
 
 class Individual(object):
 
@@ -23,40 +24,25 @@ class Individual(object):
         for i in range(0, length):
             self.genes[i] = random.randint(0, length-1)
 
-        print "genes: {}".format(self.genes)
-
-
     def calc_fitness(self, target):
-        #calculate a score for each given sequence of buttons
-        score = 0
 
-        #go through and check if the given sequence matches the target sequence
-        #dont need to check if theyre equal
-        #just need to check if the buttons are the same
-        #remove duplicates from set
-
-
-        #grab the unique items in the genes
-        # turn into its own array
-
+        #uses common elements since you are just trying to find the buttons that perform the functions
         gene_set = set(self.genes)
         target_set = set(target)
-        common_set = target_set.intersection(gene_set)
-        score = len(common_set)
+        common = target_set.intersection(gene_set)
 
-        self.difference = len(target_set) - len(common_set)
-        self.fitness = score / len(target_set)
+        # fitness is the percentage of the common elements are a part of the whole set.
+        self.fitness = float(len(common)) / len(gene_set)
 
     def get_sequence(self):
         return self.genes
 
-    def crossover(self, partner):
+    def crossover(self, partner, length):
 
-        #new child button sequence
-        child = Individual(len(self.genes))
-        midpoint = random.randint(0, len(self.genes))
+        child = Individual(length)
+        midpoint = random.randint(0, length)
 
-        for i in range (0, len(self.genes)):
+        for i in range (0, length):
             if (i > midpoint):
                 child.genes[i] = self.genes[i]
             else:
@@ -65,10 +51,6 @@ class Individual(object):
         return child
 
     def mutate(self, mutation_rate):
-
-        for i in range( 0, len(self.genes) ):
-
-            probability = random.uniform(0,1)
-
-            if ( probability < mutation_rate ):
+        for i in range(0, len(self.genes)):
+            if random.uniform(0, 1) < mutation_rate:
                 self.genes[i] = random.choice(buttons)

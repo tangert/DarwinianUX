@@ -3,30 +3,31 @@
 
 from Population import Population
 
-#Global gene length variable that decreases with time
-#as buttons are naturally selected
-GENE_LENGTH = 0
-
-def init(target_sequence, population):
+def init(target_sequence):
     mutation_rate = 0.01
-    popmax = 200
+    popmax = 100
     population = Population(target_sequence, mutation_rate, popmax)
+    return population
 
 def evolve(population):
+
+    #First naturally select in order to form the mating pool
     population.natural_selection()
     population.generate()
     population.calc_fitness()
 
-    if population.is_fully_evolved():
-        print population.get_best_sequence()
+    #Checks the fittest individual and updates the record each time
+    population.get_fittest_individual()
+
+    if population.fully_evolved:
+        print population.get_fittest_individual().genes
+        print "total generations: {}".format(population.generations)
 
 if __name__ == '__main__':
     #Initialize with a target sequence
-    population = Population([],0,0)
-
-    init([0,3,4,5,2], population)
+    population = init([1,1,1,2,0])
 
     #Keep evolving until the best match is found
-    while not population.is_fully_evolved():
+    while not population.fully_evolved:
         evolve(population)
-        print "evolving"
+
