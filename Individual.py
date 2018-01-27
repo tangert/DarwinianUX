@@ -24,6 +24,7 @@ class Individual(object):
         for i in range(0, length):
             self.genes[i] = random.randint(0, length-1)
 
+    #Most common elements
     def calc_fitness(self, target):
 
         #uses common elements since you are just trying to find the buttons that perform the functions
@@ -33,6 +34,16 @@ class Individual(object):
 
         # fitness is the percentage of the common elements are a part of the whole set.
         self.fitness = float(len(common)) / len(gene_set)
+
+    #Number of correct buttons in sequence
+    def calc_fitness2(self, target):
+        score = 0
+
+        for i in range(0, len(target)):
+            if self.genes[i] == target[i]:
+                score += 1
+
+        self.fitness = float(score/len(target))
 
     def get_sequence(self):
         return self.genes

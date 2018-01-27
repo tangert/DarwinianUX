@@ -4,6 +4,7 @@
 from Individual import Individual
 from Globals import buttons
 from Globals import GENE_LENGTH
+from Globals import button_meanings
 import random
 
 class Population(object):
@@ -103,6 +104,14 @@ class Population(object):
 
         if record == self.perfect_fitness:
             self.fully_evolved = True
+
+        print "GEN {}: {}".format(self.generations, set(self.population[index].genes))
+
+        buttons = []
+        for i in set(self.population[index].genes):
+            buttons.append(button_meanings[i])
+
+        print "BUTTONS: {}\n".format(buttons)
 
         return self.population[index]
 

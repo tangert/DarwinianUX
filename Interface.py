@@ -4,7 +4,7 @@
 from Population import Population
 
 def init(target_sequence):
-    mutation_rate = 0.01
+    mutation_rate = 0.05
     popmax = 100
     population = Population(target_sequence, mutation_rate, popmax)
     return population
@@ -20,12 +20,12 @@ def evolve(population):
     population.get_fittest_individual()
 
     if population.fully_evolved:
-        print population.get_fittest_individual().genes
+        print set(population.get_fittest_individual().genes)
         print "total generations: {}".format(population.generations)
 
 if __name__ == '__main__':
     #Initialize with a target sequence
-    population = init([1,1,1,2,0])
+    population = init([1,2,2,3])
 
     #Keep evolving until the best match is found
     while not population.fully_evolved:
